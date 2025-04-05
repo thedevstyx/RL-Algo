@@ -115,19 +115,31 @@ def ensure_accessible(maze):
 def draw_all_games(games):
     """Draw all game instances on the screen arranged in a grid."""
     screen = pygame.display.get_surface()
-    screen.fill(BLACK)  # Clear the screen before drawing
+    screen.fill((0, 0, 0))  # Clear the screen before drawing
 
-    # Arrange games in a grid
-    grid_rows = 1
-    grid_cols = 1
+    # Determine grid layout (e.g., 2x2 for 4 games, 3x3 for 9, etc.)
+    num_games = len(games)
+    grid_cols = int(np.ceil(np.sqrt(num_games)))
+    grid_rows = int(np.ceil(num_games / grid_cols))
+
     game_width = SCREEN_WIDTH / grid_cols
     game_height = SCREEN_HEIGHT / grid_rows
+
     for index, game in enumerate(games):
         row = index // grid_cols
         col = index % grid_cols
         x_offset = col * game_width
         y_offset = row * game_height
-        draw_maze(game.maze, game.player_pos, game.enemies, x_offset, y_offset, game_width, game_height)
+
+        draw_maze(
+            game.maze,
+            game.player_pos,
+            game.enemies,
+            x_offset,
+            y_offset,
+            game_width,
+            game_height
+        )
 
 
 def draw_maze(maze, player_pos, enemies, x_offset=0, y_offset=0, game_width=SCREEN_WIDTH, game_height=SCREEN_HEIGHT):
